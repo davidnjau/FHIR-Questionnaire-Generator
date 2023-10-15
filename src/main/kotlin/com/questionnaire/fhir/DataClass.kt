@@ -24,17 +24,14 @@ data class DbQuestionItems(
         val allowRepeat:Boolean?,
         val answerOption: List<ValueCoding>
 )
-data class Extension(
-        val url: String,
-        val valueExpression: ValueExpression?,
-        val valueCode: String?
+
+
+
+data class ValueCodeableConcept(
+        val text: String?,
+        val coding: List<ValueCoding>
 )
 
-data class ValueExpression(
-        val language: String,
-        val expression: String,
-        val name: String
-)
 
 data class AnswerOption(
         val valueCoding: ValueCoding
@@ -52,17 +49,7 @@ data class EnableWhen(
         val answerCoding: ValueCoding
 )
 
-data class Item(
-        val text: String,
-        val linkId: String,
-        val type: String,
-        val repeats: Boolean,
-        val extension: List<Extension>?,
-        val answerOption: List<AnswerOption>?,
-        val enableWhen: List<EnableWhen>?,
-        val definition: String?,
-        val initial: List<ValueCoding>?
-)
+
 
 data class Root(
         val title: String,
@@ -71,11 +58,46 @@ data class Root(
         val publisher: String,
         val resourceType: String,
         val subjectType: List<String>,
-        val extension: List<Extension>,
-        val item: List<Item>
+        val extension: List<Level1Extension>,
+        val item: List<FhirItem>
 )
+data class Level1Extension(
+        val url: String,
+        val valueExpression: ValueExpression?,
+        val valueCode: String?,
+        val valueCodeableConcept:ValueCodeableConcept?,
+        val valueBoolean:Boolean?
+)
+data class ValueExpression(
+        val language: String,
+        val expression: String,
+        val name: String
+)
+data class FhirItem(
+        val text: String?,
+        val linkId: String,
+        val type: String,
+        val extension: List<Level1Extension>?,
+
+        //2nd Level item
+        val repeats: Boolean?,
+        val answerOption: List<AnswerOption>?,
+
+        //3rd Level item
+        val enableWhen: List<EnableWhen>?,
+        val item: List<FhirItem>?,
+
+        //4th Level item
+        val definition:String?,
+        val initial: List<ValueCoding>?
+)
+
+
 enum class Standards{
-    ACTIVE,
+    active,
     Questionnaire,
-    Encounter
+    Encounter,
+    group,
+    page,
+    Checkbox
 }

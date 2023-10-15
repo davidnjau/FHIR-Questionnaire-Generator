@@ -1,5 +1,7 @@
 package com.questionnaire.fhir
 
+import com.google.gson.Gson
+import com.google.gson.JsonObject
 import org.springframework.http.*
 import java.util.*
 
@@ -17,7 +19,15 @@ class FormatterHelper {
     }
 
     fun generateNumber(length: Int): String {
-        return Random().nextInt(length).toString()
+        return (1..length).shuffled().first().toString()
+    }
+
+    fun removeNullValues(root: Root):JsonObject {
+        val gson = Gson()
+        val json = gson.toJsonTree(root).asJsonObject
+        val keysToRemove = json.entrySet().filter { it.value.isJsonNull }.map { it.key }
+        keysToRemove.forEach { json.remove(it) }
+        return json
     }
 
 

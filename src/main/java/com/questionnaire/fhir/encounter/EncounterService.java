@@ -1,5 +1,6 @@
 package com.questionnaire.fhir.encounter;
 
+import com.google.gson.JsonObject;
 import com.questionnaire.fhir.DbEncounter;
 import com.questionnaire.fhir.Results;
 
